@@ -4,15 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
+    <meta name="google-site-verification" content="google98e16ed5a2e36904" />
+
     <title>ARK AGENSI | Portal Resmi Tim ARK (Rahmat, Satrio, Fairul, Paris)</title>
     <meta name="description" content="Portal pusat data dan galeri rahasia ARK Agensi. Akses eksklusif untuk anggota tim: Rahmat, Satrio, Fairul, dan Paris.">
     <meta name="keywords" content="ARK Agensi, ARK Agency, Tim ARK, Rahmat ARK, Satrio ARK, Fairul ARK, Paris ARK, Anggota ARK">
-    <link rel="canonical" href="https://link-github-pages-kamu.github.io/">
     
-    <meta property="og:title" content="ARK AGENSI - Official Portal">
-    <meta property="og:description" content="Dokumen dan Galeri Rahasia Tim ARK.">
-    <meta property="og:image" content="img/team.jpg">
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -40,7 +37,7 @@
 
         /* Mode Zoom */
         #comic-viewport img { cursor: zoom-in; transition: transform 0.3s ease; }
-        #comic-viewport img:hover { transform: scale(1.02); }
+        #comic-viewport img:hover { transform: scale(1.01); }
         #zoom-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.95); z-index: 1000;
@@ -65,7 +62,7 @@
 
     <div id="zoom-overlay" onclick="closeZoom()">
         <img id="zoomed-img" src="" alt="ARK Full View">
-        <p class="absolute bottom-6 text-white/40 text-[9px] font-black uppercase tracking-[0.5em]">Ketuk untuk kembali</p>
+        <p class="absolute bottom-6 text-white/40 text-[9px] font-black uppercase tracking-[0.5em]">Klik untuk kembali</p>
     </div>
 
     <div id="login-screen" class="w-full max-w-[380px] p-10 mx-4 card-system rounded-[2.5rem] text-center z-10">
@@ -79,20 +76,20 @@
 
     <div id="agreement-screen" class="hidden-content w-full max-w-[450px] p-8 mx-4 card-system rounded-[2.5rem] z-10">
         <h2 class="font-black italic text-lg uppercase text-white mb-6 border-b border-indigo-500/30 pb-3">Protokol Verifikasi</h2>
-        <div class="space-y-4 text-left">
+        <div class="space-y-4">
             <label class="flex items-center gap-3 bg-black/30 p-4 rounded-xl cursor-pointer">
                 <input type="checkbox" id="checkIzin" class="w-5 h-5 accent-indigo-500">
                 <span class="text-[10px] font-black text-gray-300 uppercase">1. Sudah dapat izin ketua?</span>
             </label>
-            <div class="bg-black/30 p-4 rounded-xl">
-                <p class="text-[9px] font-black text-indigo-400 mb-3 uppercase tracking-widest text-center">2. Konfirmasi Anggota Resmi</p>
+            <div class="bg-black/30 p-4 rounded-xl text-center">
+                <p class="text-[9px] font-black text-indigo-400 mb-3 uppercase tracking-widest">2. Konfirmasi Anggota Resmi</p>
                 <div class="flex gap-2">
                     <button id="btnIya" class="btn-choice flex-1 py-3 bg-slate-800 rounded-lg text-[10px] font-black text-white">IYA</button>
                     <button id="btnTidak" class="btn-choice flex-1 py-3 bg-slate-800 rounded-lg text-[10px] font-black text-white">TIDAK</button>
                 </div>
             </div>
-            <div class="bg-black/30 p-4 rounded-xl">
-                <p class="text-[9px] font-black text-indigo-400 mb-2 uppercase tracking-widest text-center">3. Alasan Mengakses</p>
+            <div class="bg-black/30 p-4 rounded-xl text-center">
+                <p class="text-[9px] font-black text-indigo-400 mb-2 uppercase tracking-widest">3. Alasan Mengakses</p>
                 <textarea id="alasanInput" placeholder="Tulis alasan..." class="w-full bg-black/40 border border-white/5 rounded-lg p-3 text-xs text-white h-20 outline-none focus:border-indigo-500"></textarea>
             </div>
         </div>
@@ -107,7 +104,7 @@
             </div>
         </nav>
         <div class="pt-28 px-4 text-center max-w-[750px] mx-auto pb-16">
-            <p class="text-[8px] text-indigo-400 font-black mb-3 uppercase tracking-[0.4em] animate-pulse">Klik foto untuk memperbesar</p>
+            <p class="text-[8px] text-indigo-400 font-black mb-3 uppercase tracking-[0.4em] animate-pulse">Klik foto untuk mode layar penuh</p>
             <div id="comic-viewport" class="bg-black border-2 border-indigo-500/30 rounded-[2.5rem] overflow-hidden shadow-2xl" onclick="openZoom()"></div>
             
             <div class="mt-8 flex justify-center items-center gap-5 bg-slate-900/80 p-4 rounded-3xl border border-white/10 shadow-2xl">
@@ -125,7 +122,6 @@
         let currentPage = 1; 
         const totalPages = 6;
 
-        // Login & Verifikasi
         document.getElementById('loginBtn').onclick = () => {
             if(document.getElementById('passInput').value === KODE_AKSES) {
                 document.getElementById('login-screen').classList.add('hidden-content');
@@ -156,11 +152,10 @@
             renderPage(1);
         };
 
-        // Render Komik
         function renderPage(n) {
             const vp = document.getElementById('comic-viewport');
             const src = (n === 1) ? "img/team.jpg" : `img/${n}.jpg`;
-            vp.innerHTML = `<img id="current-img" src="${src}" class="w-full" alt="Arsip Foto ARK Halaman ${n}">`;
+            vp.innerHTML = `<img id="current-img" src="${src}" class="w-full" alt="Arsip ARK ${n}">`;
             document.getElementById('pageSelect').value = n;
             currentPage = n;
         }
@@ -173,14 +168,13 @@
         document.getElementById('prevBtn').onclick = () => { if(currentPage > 1) renderPage(currentPage - 1); };
         document.getElementById('pageSelect').onchange = (e) => renderPage(parseInt(e.target.value));
 
-        // Fitur Zoom
         function openZoom() {
             document.getElementById('zoomed-img').src = document.getElementById('current-img').src;
             document.getElementById('zoom-overlay').style.display = 'flex';
         }
         function closeZoom() { document.getElementById('zoom-overlay').style.display = 'none'; }
 
-        // Efek Pixel (Three.js)
+        // Efek Pixel
         const canvas = document.getElementById('pixel-canvas');
         const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
