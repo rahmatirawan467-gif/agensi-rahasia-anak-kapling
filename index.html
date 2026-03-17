@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,9 +9,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #020617; color: #e2e8f0; }
-        .glass { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .comic-container { box-shadow: 0 0 50px rgba(0,0,0,0.8); }
-        .heart-active { fill: #ef4444; color: #ef4444 !important; transform: scale(1.2); }
+        .glass { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .comic-frame { box-shadow: 0 0 60px rgba(0,0,0,0.8); }
+        .heart-active { fill: #ef4444; color: #ef4444 !important; }
     </style>
 </head>
 <body>
@@ -19,10 +19,9 @@
     <nav class="glass fixed top-0 w-full z-50 px-6 py-4">
         <div class="max-w-5xl mx-auto flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center font-bold text-white shadow-lg shadow-indigo-500/30">ARK</div>
+                <div class="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center font-bold text-white shadow-lg shadow-indigo-500/30 font-black">ARK</div>
                 <span class="font-extrabold tracking-tight text-xl uppercase italic">Agensi Rahasia <span class="text-indigo-500">Kapling</span></span>
             </div>
-            <div class="text-[10px] font-bold tracking-[0.2em] text-gray-500 uppercase">Mission Status: Active</div>
         </div>
     </nav>
 
@@ -31,74 +30,57 @@
     <main class="pt-28 pb-20 px-4">
         
         <header class="max-w-3xl mx-auto mb-16 text-center">
-            <h2 class="text-xs font-bold text-indigo-500 uppercase tracking-[0.4em] mb-3">Top Secret Document</h2>
-            <h1 class="text-4xl md:text-6xl font-black mb-6 tracking-tighter uppercase">Agensi Rahasia Kapling</h1>
-            
-            <div class="flex flex-wrap justify-center gap-4 text-gray-400 text-sm italic">
+            <h2 class="text-xs font-bold text-indigo-500 uppercase tracking-[0.4em] mb-3 italic">Unit Operasional Khusus</h2>
+            <h1 class="text-5xl md:text-7xl font-black mb-6 tracking-tighter uppercase leading-none">ARK KOMIK</h1>
+            <div class="flex flex-wrap justify-center gap-4 text-gray-500 text-xs font-bold tracking-widest uppercase">
                 <span>Rahmat Irawan</span> • <span>Satrio</span> • <span>Fairul</span> • <span>Paris</span>
             </div>
         </header>
 
-        <div id="reader" class="max-w-[800px] mx-auto comic-container bg-slate-900 rounded-2xl overflow-hidden border border-white/5">
+        <div id="reader" class="max-w-[800px] mx-auto comic-frame bg-slate-900 rounded-2xl overflow-hidden border border-white/5">
             </div>
 
-        <section class="max-w-[800px] mx-auto mt-12 p-8 bg-slate-900/40 rounded-3xl border border-white/5">
-            
-            <div class="flex flex-col items-center mb-16">
-                <button id="btn-like" class="group flex flex-col items-center gap-3 transition-transform active:scale-90">
-                    <div class="p-5 bg-white/5 rounded-full group-hover:bg-red-500/10 transition-colors">
-                        <i data-lucide="heart" id="icon-heart" class="w-10 h-10 text-gray-500 transition-all"></i>
-                    </div>
-                    <span id="text-like" class="font-black text-gray-400 tracking-widest text-sm uppercase">0 Laporan Disukai</span>
-                </button>
-            </div>
-
-            <div class="border-t border-white/5 pt-12">
-                <h3 class="text-xl font-bold mb-8 flex items-center gap-3 text-white">
-                    <i data-lucide="message-square" class="text-indigo-500 w-6 h-6"></i> RUANG DISKUSI AGEN
-                </h3>
-                
-                <div class="grid gap-4 mb-10">
-                    <input type="text" id="input-nama" placeholder="ID Agen (Nama Anda)..." 
-                        class="w-full bg-black/50 border border-white/10 rounded-xl px-5 py-4 focus:outline-none focus:border-indigo-500 transition text-sm">
-                    <textarea id="input-pesan" rows="3" placeholder="Tulis pesan atau feedback..." 
-                        class="w-full bg-black/50 border border-white/10 rounded-xl px-5 py-4 focus:outline-none focus:border-indigo-500 transition text-sm"></textarea>
-                    <button id="btn-kirim" 
-                        class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 rounded-xl transition shadow-xl shadow-indigo-600/30 uppercase tracking-widest text-xs">
-                        Kirim Laporan
-                    </button>
+        <div class="max-w-[800px] mx-auto mt-12 text-center border-b border-white/5 pb-12">
+            <button id="btn-like" class="group transition-transform active:scale-90 flex flex-col items-center mx-auto">
+                <div class="p-5 bg-white/5 rounded-full group-hover:bg-red-500/10 mb-2 transition-all">
+                    <i data-lucide="heart" id="icon-heart" class="w-12 h-12 text-gray-600 transition-all"></i>
                 </div>
+                <span id="text-like" class="font-black text-gray-400 text-sm tracking-widest uppercase italic">0 Laporan Disukai</span>
+            </button>
+        </div>
 
-                <div id="wadah-komentar" class="space-y-6">
-                    </div>
-            </div>
+        <section class="max-w-[800px] mx-auto mt-16 p-6 bg-white/5 rounded-3xl border border-white/5">
+            <h3 class="text-xl font-bold mb-8 flex items-center gap-3 text-indigo-400">
+                <i data-lucide="message-circle"></i> DISKUSI AGEN PUBLIK
+            </h3>
+            
+            <div id="disqus_thread"></div>
         </section>
 
     </main>
 
-    <footer class="py-12 border-t border-white/5 text-center text-gray-600 text-[10px] tracking-[0.3em] uppercase">
-        © 2026 Agensi Rahasia Kapling - Unit Operasional
+    <footer class="py-12 text-center text-gray-700 text-[10px] tracking-[0.5em] uppercase font-bold">
+        © 2026 Agensi Rahasia Kapling - Unit ARK
     </footer>
 
     <script>
         lucide.createIcons();
 
-        // 1. PENGATURAN GAMBAR (WAJIB DIUBAH)
-        const totalHalamanKomik = 5; // <--- Ganti jumlah halaman komikmu di sini
-        const folder = "img/"; // <--- Nama folder gambar
+        // 1. PENGATURAN GAMBAR
+        const totalHalaman = 5; // <--- Ganti sesuai jumlah komikmu
+        const folder = "img/";
         const reader = document.getElementById('reader');
 
-        // Fungsi Memasukkan Gambar
-        function muatKonten() {
-            // A. Masukkan Foto Tim (Selfie)
-            const fotoTim = document.createElement('img');
-            fotoTim.src = folder + "team.jpg"; // <--- Pastikan file selfie namanyateam.jpg
-            fotoTim.className = "w-full block border-b-4 border-indigo-600";
-            fotoTim.onerror = () => fotoTim.style.display = 'none'; // Sembunyikan jika file tidak ada
-            reader.appendChild(fotoTim);
+        function loadImages() {
+            // Foto Tim (Selfie)
+            const team = document.createElement('img');
+            team.src = folder + "team.jpg";
+            team.className = "w-full block border-b-4 border-indigo-600 mb-2";
+            team.onerror = () => team.style.display = 'none';
+            reader.appendChild(team);
 
-            // B. Masukkan Gambar Komik (2.jpg, 3.jpg, dst)
-            for (let i = 2; i <= totalHalamanKomik + 1; i++) {
+            // Komik (2.jpg, 3.jpg, dst)
+            for (let i = 2; i <= totalHalaman + 1; i++) {
                 const img = document.createElement('img');
                 img.src = `${folder}${i}.jpg`;
                 img.className = "w-full block opacity-0 transition-opacity duration-1000 border-b border-white/5";
@@ -108,65 +90,42 @@
             }
         }
 
-        // 2. LOGIKA LIKE (Simpan di HP/Browser)
-        let jumlahLike = localStorage.getItem('ark_likes') || 0;
+        // 2. LOGIKA LIKE (Sistem TikTok - Satu Orang Satu Like)
+        let isLiked = localStorage.getItem('ark_user_liked') === 'true';
+        let fakeLikes = 142; // Angka simulasi awal
+        
         const btnLike = document.getElementById('btn-like');
         const iconHeart = document.getElementById('icon-heart');
         const textLike = document.getElementById('text-like');
 
-        textLike.innerText = `${jumlahLike} LAPORAN DISUKAI`;
-
-        btnLike.onclick = () => {
-            jumlahLike++;
-            localStorage.setItem('ark_likes', jumlahLike);
-            textLike.innerText = `${jumlahLike} LAPORAN DISUKAI`;
-            iconHeart.classList.add('heart-active');
-            
-            // Efek getar saat klik
-            btnLike.classList.add('scale-110');
-            setTimeout(() => btnLike.classList.remove('scale-110'), 150);
-        };
-
-        // 3. LOGIKA KOMENTAR
-        const wadahKomentar = document.getElementById('wadah-komentar');
-        const btnKirim = document.getElementById('btn-kirim');
-
-        function tampilkanKomentar() {
-            const data = JSON.parse(localStorage.getItem('ark_comments')) || [];
-            wadahKomentar.innerHTML = data.map(item => `
-                <div class="bg-black/30 p-5 rounded-2xl border border-white/5">
-                    <div class="flex justify-between items-center mb-3">
-                        <span class="font-bold text-indigo-400 text-xs tracking-wider uppercase underline underline-offset-4">${item.nama}</span>
-                        <span class="text-[9px] text-gray-600">${item.waktu}</span>
-                    </div>
-                    <p class="text-gray-300 text-sm leading-relaxed">${item.pesan}</p>
-                </div>
-            `).join('');
+        function updateUI() {
+            textLike.innerText = `${isLiked ? fakeLikes + 1 : fakeLikes} LAPORAN DISUKAI`;
+            if(isLiked) {
+                iconHeart.classList.add('heart-active');
+            } else {
+                iconHeart.classList.remove('heart-active');
+            }
         }
 
-        btnKirim.onclick = () => {
-            const nama = document.getElementById('input-nama').value;
-            const pesan = document.getElementById('input-pesan').value;
-
-            if (nama && pesan) {
-                const komentarBaru = {
-                    nama: nama,
-                    pesan: pesan,
-                    waktu: new Date().toLocaleString('id-ID')
-                };
-                const list = JSON.parse(localStorage.getItem('ark_comments')) || [];
-                list.unshift(komentarBaru);
-                localStorage.setItem('ark_comments', JSON.stringify(list));
-                
-                document.getElementById('input-nama').value = '';
-                document.getElementById('input-pesan').value = '';
-                tampilkanKomentar();
-            } else {
-                alert("Isi data laporan dengan lengkap, Agen!");
-            }
+        btnLike.onclick = () => {
+            isLiked = !isLiked;
+            localStorage.setItem('ark_user_liked', isLiked);
+            updateUI();
         };
 
-        // Progress Bar Scroll
+        // 3. LOGIKA KOMENTAR PUBLIK (DISQUS)
+        var disqus_config = function () {
+            this.page.url = window.location.href;  
+            this.page.identifier = 'ark-komik-main'; 
+        };
+        (function() { 
+            var d = document, s = d.createElement('script');
+            // GANTI 'ark-komik-1' dengan Nama Singkat (Shortname) Disqus kamu
+            s.src = 'https://ark-komik-1.disqus.com/embed.js'; 
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+
         window.onscroll = () => {
             let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
             let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -174,9 +133,8 @@
             document.getElementById("progress-bar").style.width = scrolled + "%";
         };
 
-        // Jalankan Fungsi
-        muatKonten();
-        tampilkanKomentar();
+        loadImages();
+        updateUI();
     </script>
 </body>
 </html>
