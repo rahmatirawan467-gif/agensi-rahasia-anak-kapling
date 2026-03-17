@@ -3,33 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ARK | Security Protocol</title>
+    <title>ARK | Authorized Access Only</title>
     
     <link rel="preload" as="image" href="img/team.jpg">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     
     <style>
-        body { background-color: #020617; margin: 0; color: #e2e8f0; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { 
+            background-color: #020617; 
+            margin: 0;
+            color: #e2e8f0; 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            overflow-x: hidden;
+        }
+
+        /* BACKGROUND FOTO TIM (DIBUAT TERANG) */
         #ark-bg-image {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
-            background-size: cover; background-position: center; background-image: url('img/team.jpg'); 
-            filter: blur(4px) brightness(60%); transition: background-image 0.5s ease-in-out;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -2;
+            background-size: cover;
+            background-position: center;
+            background-image: url('img/team.jpg'); 
+            filter: blur(3px) brightness(65%); /* Brightness 65% agar foto terlihat jelas di HP */
+            transition: background-image 0.6s ease-in-out;
+            transform: scale(1.05);
         }
+
+        /* OVERLAY GRADASI TRANSPARAN */
         .ark-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-            background: linear-gradient(-45deg, rgba(2, 6, 23, 0.6), rgba(15, 23, 42, 0.5), rgba(30, 27, 75, 0.6));
-            background-size: 400% 400%; animation: gradientMove 15s ease infinite;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: linear-gradient(-45deg, rgba(2, 6, 23, 0.4), rgba(15, 23, 42, 0.3), rgba(30, 27, 75, 0.4));
+            background-size: 400% 400%;
+            animation: gradientMove 15s ease infinite;
         }
-        @keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        .card-system { background: rgba(15, 23, 42, 0.98); border: 2px solid #4f46e5; box-shadow: 0 0 50px rgba(79, 70, 229, 0.3); }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .card-system { 
+            background: rgba(15, 23, 42, 0.98); 
+            border: 2px solid #4f46e5; 
+            box-shadow: 0 0 50px rgba(79, 70, 229, 0.4); 
+            backdrop-filter: blur(10px);
+        }
+
         .hidden-content { display: none !important; }
-        .glass { background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px); border-bottom: 3px solid #4f46e5; }
+        .glass-nav { background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px); border-bottom: 2px solid #4f46e5; }
         
-        /* Tombol Pilihan Anggota */
-        .btn-choice { border: 1px solid rgba(79, 70, 229, 0.3); transition: all 0.3s; }
-        .btn-active { background: #4f46e5 !important; border-color: #818cf8; color: white; transform: scale(1.05); }
+        /* Gaya Tombol Pilihan */
+        .choice-btn { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid rgba(255,255,255,0.1); }
+        .active-iya { background: #4f46e5 !important; color: white !important; transform: scale(1.05); border-color: #818cf8; box-shadow: 0 0 20px rgba(79, 70, 229, 0.5); }
+        .active-tidak { background: #ef4444 !important; color: white !important; transform: scale(1.05); border-color: #f87171; }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen">
@@ -38,61 +71,69 @@
     <div class="ark-overlay"></div>
 
     <div id="login-screen" class="w-full max-w-[400px] p-10 mx-4 card-system rounded-[3rem] text-center">
-        <div class="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-6"><i data-lucide="lock" class="text-white w-8 h-8"></i></div>
-        <h2 class="font-black italic text-2xl uppercase mb-8 text-white tracking-tighter">Dekripsi Akses</h2>
-        <input type="password" id="passInput" placeholder="KODE RAHASIA..." class="w-full bg-black/80 border-2 border-indigo-500/40 rounded-2xl px-6 py-4 text-center focus:border-indigo-500 transition-all mb-4 font-bold text-white tracking-widest outline-none">
-        <button id="loginBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-black py-4 rounded-2xl shadow-lg uppercase text-sm active:scale-95">Masuk</button>
-        <p id="errorMsg" class="text-red-500 text-[10px] mt-4 font-black uppercase hidden">Akses Ditolak!</p>
+        <div class="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-indigo-500/30">
+            <i data-lucide="shield-check" class="text-white w-8 h-8"></i>
+        </div>
+        <h2 class="font-black italic text-2xl uppercase mb-8 text-white tracking-tighter">Akses Unit ARK</h2>
+        <input type="password" id="passInput" placeholder="KODE DEKRIPSI..." 
+            class="w-full bg-black/80 border-2 border-indigo-500/20 rounded-2xl px-6 py-4 text-center focus:border-indigo-500 transition-all mb-4 font-black text-white tracking-[0.3em] outline-none">
+        <button id="loginBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-black py-4 rounded-2xl shadow-xl uppercase text-xs active:scale-95 transition-all">Verifikasi</button>
+        <p id="errorMsg" class="text-red-500 text-[10px] mt-4 font-black uppercase hidden animate-pulse">Sandi Salah! Akses Ditolak.</p>
     </div>
 
-    <div id="agreement-screen" class="hidden-content w-full max-w-[500px] p-10 mx-4 card-system rounded-[3rem] max-h-[90vh] overflow-y-auto">
-        <h2 class="font-black italic text-xl uppercase text-white tracking-tighter mb-6 text-center border-b border-indigo-500/30 pb-4">Verifikasi Identitas Agen</h2>
+    <div id="agreement-screen" class="hidden-content w-full max-w-[480px] p-8 mx-4 card-system rounded-[3rem] max-h-[90vh] overflow-y-auto">
+        <h2 class="font-black italic text-xl uppercase text-white tracking-tighter mb-8 text-center border-b border-indigo-500/30 pb-4">Protokol Persetujuan</h2>
         
-        <div class="mb-6 bg-black/30 p-4 rounded-2xl border border-white/5">
-            <label class="flex items-center gap-3 cursor-pointer">
-                <input type="checkbox" id="checkIzin" class="w-5 h-5 accent-indigo-600">
-                <span class="text-xs font-bold text-gray-300">1. APAKAH ANDA SUDAH DAPAT IZIN?</span>
+        <div class="mb-6 bg-slate-900/60 p-5 rounded-2xl border border-white/5">
+            <label class="flex items-center gap-4 cursor-pointer group">
+                <input type="checkbox" id="checkIzin" class="w-5 h-5 accent-indigo-600 cursor-pointer">
+                <span class="text-[11px] font-black text-gray-300 uppercase tracking-wider group-hover:text-indigo-400">1. Apakah Anda sudah dapat ijin?</span>
             </label>
         </div>
 
-        <div class="mb-6 bg-black/30 p-4 rounded-2xl border border-white/5">
-            <p class="text-[10px] font-black text-indigo-400 mb-3 uppercase tracking-widest">2. APAKAH ANDA ANGGOTA RESMI ARK?</p>
-            <div class="flex flex-wrap gap-2 mb-4 justify-center">
-                <span class="px-3 py-1 bg-slate-800 rounded-full text-[10px] font-bold text-white border border-indigo-500/20">RAHMAT</span>
-                <span class="px-3 py-1 bg-slate-800 rounded-full text-[10px] font-bold text-white border border-indigo-500/20">SATRIO</span>
-                <span class="px-3 py-1 bg-slate-800 rounded-full text-[10px] font-bold text-white border border-indigo-500/20">FAIRUL</span>
-                <span class="px-3 py-1 bg-slate-800 rounded-full text-[10px] font-bold text-white border border-indigo-500/20">PARIS</span>
+        <div class="mb-6 bg-slate-900/60 p-5 rounded-2xl border border-white/5 text-center">
+            <p class="text-[10px] font-black text-indigo-400 mb-4 uppercase tracking-[0.2em]">2. Apakah Anda Anggota Resmi ARK?</p>
+            <div class="flex flex-wrap gap-2 mb-6 justify-center">
+                <span class="px-3 py-1 bg-black/40 rounded-lg text-[9px] font-black text-white border border-white/10 uppercase">Rahmat</span>
+                <span class="px-3 py-1 bg-black/40 rounded-lg text-[9px] font-black text-white border border-white/10 uppercase">Satrio</span>
+                <span class="px-3 py-1 bg-black/40 rounded-lg text-[9px] font-black text-white border border-white/10 uppercase">Fairul</span>
+                <span class="px-3 py-1 bg-black/40 rounded-lg text-[9px] font-black text-white border border-white/10 uppercase">Paris</span>
             </div>
-            <div class="flex gap-2">
-                <button id="btnIya" class="btn-choice flex-1 bg-slate-900 py-3 rounded-xl text-xs font-black text-gray-400">IYA</button>
-                <button id="btnTidak" class="btn-choice flex-1 bg-slate-900 py-3 rounded-xl text-xs font-black text-gray-400">TIDAK</button>
+            <div class="flex gap-3">
+                <button id="btnIya" class="choice-btn flex-1 bg-slate-800 py-3 rounded-xl text-xs font-black text-gray-400 uppercase">IYA</button>
+                <button id="btnTidak" class="choice-btn flex-1 bg-slate-800 py-3 rounded-xl text-xs font-black text-gray-400 uppercase">TIDAK</button>
             </div>
         </div>
 
-        <div class="mb-8 bg-black/30 p-4 rounded-2xl border border-white/5">
-            <p class="text-[10px] font-black text-indigo-400 mb-3 uppercase tracking-widest">3. MENGAPA ANDA INGIN MASUK TIM AGENSI?</p>
-            <textarea id="alasanInput" placeholder="Tuliskan pendapat/alasan Anda di sini..." class="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-xs text-white focus:border-indigo-500 outline-none h-24 resize-none"></textarea>
+        <div class="mb-8 bg-slate-900/60 p-5 rounded-2xl border border-white/5">
+            <p class="text-[10px] font-black text-indigo-400 mb-3 uppercase tracking-[0.2em]">3. Mengapa Anda ingin masuk Tim Agensi?</p>
+            <textarea id="alasanInput" placeholder="Berikan pendapat/alasan Anda..." class="w-full bg-black/60 border border-white/10 rounded-xl p-4 text-xs text-white focus:border-indigo-500 outline-none h-24 resize-none transition-all"></textarea>
         </div>
 
-        <button id="openDocBtn" disabled class="w-full bg-slate-800 text-gray-500 font-black py-4 rounded-2xl uppercase text-xs transition-all cursor-not-allowed">Buka Dokumen Rahasia</button>
+        <button id="openDocBtn" disabled class="w-full bg-slate-800 text-gray-600 font-black py-5 rounded-2xl uppercase text-[11px] tracking-widest transition-all cursor-not-allowed">Buka Dokumen Rahasia</button>
     </div>
 
     <div id="main-content" class="hidden-content w-full min-h-screen">
-        <nav class="glass fixed top-0 w-full z-50 p-4">
+        <nav class="glass-nav fixed top-0 w-full z-50 p-4">
             <div class="max-w-5xl mx-auto flex justify-between items-center">
-                <h1 class="font-black italic text-lg uppercase text-white tracking-tighter leading-none">ARK AGENSI</h1>
-                <div class="text-[8px] font-bold text-indigo-300 tracking-widest uppercase">Rahmat • Satrio • Fairul • Paris</div>
+                <h1 class="font-black italic text-lg uppercase text-white tracking-tighter">ARK AGENSI</h1>
+                <div class="text-[8px] font-bold text-indigo-300 tracking-[0.3em] uppercase">RAHMAT • SATRIO • FAIRUL • PARIS</div>
             </div>
         </nav>
 
         <main class="pt-32 px-4 max-w-[800px] mx-auto pb-20 text-center">
-            <div class="bg-black rounded-[2rem] overflow-hidden shadow-2xl inline-block w-full border-2 border-indigo-500/20">
+            <div class="bg-black rounded-[2.5rem] overflow-hidden shadow-2xl inline-block w-full border-2 border-indigo-500/20">
                 <div id="comic-viewport" class="w-full min-h-[400px]"></div>
             </div>
-            <div class="mt-8 flex justify-center gap-4 bg-slate-900/90 p-4 rounded-3xl inline-flex mx-auto border border-white/10">
-                <button id="prevBtn" class="p-4 bg-slate-800 rounded-2xl disabled:opacity-20"><i data-lucide="chevron-left"></i></button>
-                <select id="pageSelect" class="bg-slate-800 text-white font-bold rounded-xl px-4 py-2 outline-none border border-indigo-500/30"></select>
-                <button id="nextBtn" class="p-4 bg-indigo-600 rounded-2xl disabled:opacity-20"><i data-lucide="chevron-right"></i></button>
+
+            <div class="mt-8 flex justify-center gap-4 bg-slate-900/90 p-4 rounded-3xl inline-flex mx-auto border border-white/10 shadow-xl">
+                <button id="prevBtn" class="p-4 bg-slate-800 rounded-2xl hover:bg-indigo-600 transition-all active:scale-90 disabled:opacity-20">
+                    <i data-lucide="chevron-left"></i>
+                </button>
+                <select id="pageSelect" class="bg-slate-800 text-white font-bold rounded-xl px-5 py-2 outline-none border border-indigo-500/30 cursor-pointer"></select>
+                <button id="nextBtn" class="p-4 bg-indigo-600 rounded-2xl hover:bg-indigo-500 transition-all active:scale-90 disabled:opacity-20 shadow-lg shadow-indigo-600/30">
+                    <i data-lucide="chevron-right"></i>
+                </button>
             </div>
         </main>
     </div>
@@ -101,85 +142,109 @@
         lucide.createIcons();
         const SANDI_RAHASIA = "ARK2026"; 
         
-        let isIzin = false, isAnggota = false, hasAlasan = false;
+        const loginScreen = document.getElementById('login-screen');
+        const agreementScreen = document.getElementById('agreement-screen');
+        const mainContent = document.getElementById('main-content');
+        const passInput = document.getElementById('passInput');
+        const loginBtn = document.getElementById('loginBtn');
+        
+        const checkIzin = document.getElementById('checkIzin');
+        const btnIya = document.getElementById('btnIya');
+        const btnTidak = document.getElementById('btnTidak');
+        const alasanInput = document.getElementById('alasanInput');
+        const openBtn = document.getElementById('openDocBtn');
 
-        // STEP 1: LOGIN
-        document.getElementById('loginBtn').onclick = () => {
-            if (document.getElementById('passInput').value === SANDI_RAHASIA) {
-                document.getElementById('login-screen').classList.add('hidden-content');
-                document.getElementById('agreement-screen').classList.remove('hidden-content');
+        let statIzin = false;
+        let statAnggota = false;
+        let statAlasan = false;
+
+        // FUNGSI LOGIN
+        loginBtn.onclick = () => {
+            if (passInput.value === SANDI_RAHASIA) {
+                loginScreen.classList.add('hidden-content');
+                agreementScreen.classList.remove('hidden-content');
             } else {
                 document.getElementById('errorMsg').classList.remove('hidden');
             }
         };
 
-        // STEP 2: LOGIKA VALIDASI PERSETUJUAN
-        const btnIya = document.getElementById('btnIya');
-        const btnTidak = document.getElementById('btnTidak');
-        const openBtn = document.getElementById('openDocBtn');
-        const checkIzin = document.getElementById('checkIzin');
-        const alasanArea = document.getElementById('alasanInput');
+        // FUNGSI VALIDASI (CEK SEMUA SYARAT)
+        function validateAll() {
+            statIzin = checkIzin.checked;
+            statAlasan = alasanInput.value.trim().length > 3;
 
-        function checkFinal() {
-            isIzin = checkIzin.checked;
-            hasAlasan = alasanArea.value.trim().length > 5;
-            
-            if (isIzin && isAnggota && hasAlasan) {
+            if (statIzin && statAnggota && statAlasan) {
                 openBtn.disabled = false;
-                openBtn.classList.remove('bg-slate-800', 'text-gray-500', 'cursor-not-allowed');
-                openBtn.classList.add('bg-indigo-600', 'text-white', 'hover:bg-indigo-500', 'shadow-xl');
+                openBtn.classList.remove('bg-slate-800', 'text-gray-600', 'cursor-not-allowed');
+                openBtn.classList.add('bg-indigo-600', 'text-white', 'hover:bg-indigo-400', 'shadow-[0_0_30px_rgba(79,70,229,0.5)]');
             } else {
                 openBtn.disabled = true;
-                openBtn.classList.add('bg-slate-800', 'text-gray-500', 'cursor-not-allowed');
-                openBtn.classList.remove('bg-indigo-600', 'text-white', 'hover:bg-indigo-500');
+                openBtn.classList.add('bg-slate-800', 'text-gray-600', 'cursor-not-allowed');
+                openBtn.classList.remove('bg-indigo-600', 'text-white', 'shadow-[0_0_30px_rgba(79,70,229,0.5)]');
             }
         }
 
-        checkIzin.onchange = checkFinal;
-        alasanArea.oninput = checkFinal;
+        // Event Listeners untuk Persetujuan
+        checkIzin.onchange = validateAll;
+        alasanInput.oninput = validateAll;
 
         btnIya.onclick = () => {
-            isAnggota = true;
-            btnIya.classList.add('btn-active');
-            btnTidak.classList.remove('btn-active');
-            checkFinal();
+            statAnggota = true;
+            btnIya.classList.add('active-iya');
+            btnTidak.classList.remove('active-tidak');
+            validateAll();
         };
 
         btnTidak.onclick = () => {
-            isAnggota = false; // Jika pilih TIDAK, tombol buka dokumen tetap mati
-            btnTidak.classList.add('bg-red-600', 'text-white');
-            btnIya.classList.remove('btn-active');
-            alert("Hanya anggota resmi yang boleh melanjutkan!");
-            checkFinal();
+            statAnggota = false;
+            btnTidak.classList.add('active-tidak');
+            btnIya.classList.remove('active-iya');
+            alert("Akses hanya untuk anggota tim ARK!");
+            validateAll();
         };
 
         openBtn.onclick = () => {
-            document.getElementById('agreement-screen').classList.add('hidden-content');
-            document.getElementById('main-content').classList.remove('hidden-content');
+            agreementScreen.classList.add('hidden-content');
+            mainContent.classList.remove('hidden-content');
             document.body.classList.remove('items-center', 'justify-center');
             gantiHalaman(1);
         };
 
-        // STEP 3: SISTEM KOMIK
-        const jumlahHalamanKomik = 5; const totalHalaman = jumlahHalamanKomik + 1; let indexHalaman = 1; const pathFolder = "img/";
-        const viewport = document.getElementById('comic-viewport'); const pageSelect = document.getElementById('pageSelect'); const bgImage = document.getElementById('ark-bg-image');
+        // SISTEM KOMIK
+        const jumlahHalamanKomik = 5; 
+        const totalHalaman = jumlahHalamanKomik + 1;
+        let indexHalaman = 1;
+        const pathFolder = "img/";
+        const viewport = document.getElementById('comic-viewport');
+        const pageSelect = document.getElementById('pageSelect');
+        const bgImage = document.getElementById('ark-bg-image');
 
         function gantiHalaman(nomor) {
             viewport.innerHTML = "";
             const imgSrc = (nomor === 1) ? pathFolder + "team.jpg" : `${pathFolder}${nomor}.jpg`;
-            const img = document.createElement('img'); img.src = imgSrc; img.className = "w-full block"; viewport.appendChild(img);
-            bgImage.style.backgroundImage = `url('${imgSrc}')`; pageSelect.value = nomor;
-            document.getElementById('prevBtn').disabled = nomor === 1; document.getElementById('nextBtn').disabled = nomor === totalHalaman;
+            const img = document.createElement('img');
+            img.src = imgSrc;
+            img.className = "w-full block animate-[fadeIn_0.5s_ease-out]";
+            viewport.appendChild(img);
+            
+            bgImage.style.backgroundImage = `url('${imgSrc}')`;
+            pageSelect.value = nomor;
+            document.getElementById('prevBtn').disabled = nomor === 1;
+            document.getElementById('nextBtn').disabled = nomor === totalHalaman;
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         for (let i = 1; i <= totalHalaman; i++) {
-            const opt = document.createElement('option'); opt.value = i; opt.innerText = i === 1 ? "COVER" : `HALAMAN ${i}`; pageSelect.appendChild(opt);
+            const opt = document.createElement('option');
+            opt.value = i;
+            opt.innerText = i === 1 ? "COVER AGEN" : `HALAMAN ${i}`;
+            pageSelect.appendChild(opt);
         }
 
         document.getElementById('prevBtn').onclick = () => { if(indexHalaman > 1) { indexHalaman--; gantiHalaman(indexHalaman); } };
         document.getElementById('nextBtn').onclick = () => { if(indexHalaman < totalHalaman) { indexHalaman++; gantiHalaman(indexHalaman); } };
         pageSelect.onchange = (e) => { indexHalaman = parseInt(e.target.value); gantiHalaman(indexHalaman); };
     </script>
+
 </body>
 </html>
