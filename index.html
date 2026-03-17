@@ -3,155 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agensi Rahasia Anak Kapling | Web Komik</title>
+    <title>ARK | Restricted Access</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        /* Background Kartun Retro */
         body { 
             background-color: #020617;
             background-image: radial-gradient(#1e293b 1px, transparent 1px);
             background-size: 20px 20px;
             color: #e2e8f0; 
             font-family: 'Plus Jakarta Sans', sans-serif; 
-            margin: 0;
-            padding: 0;
         }
-        .glass { 
-            background: rgba(15, 23, 42, 0.95); 
-            backdrop-filter: blur(10px); 
-            border-bottom: 3px solid #4f46e5; 
-        }
-        .comic-frame { 
-            box-shadow: 0 0 50px rgba(79, 70, 229, 0.2); 
-            border: 2px solid #334155;
-            min-height: 400px;
-        }
-        .btn-nav { 
-            background: #1e293b; 
-            border: 1px solid #334155; 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-        }
-        .btn-nav:hover:not(:disabled) { 
-            background: #4f46e5; 
-            border-color: #6366f1; 
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
-        }
-        .btn-nav:active { transform: scale(0.95); }
+        .glass { background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); border-bottom: 3px solid #4f46e5; }
         .header-text { text-shadow: 2px 2px 0px #4f46e5; }
-        
-        /* Animasi Transisi Halaman */
-        @keyframes pageIn {
-            from { opacity: 0; transform: scale(0.98); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        .animate-page { animation: pageIn 0.4s ease-out; }
+        .hidden-content { display: none; }
+        .login-card { box-shadow: 0 0 50px rgba(79, 70, 229, 0.3); border: 2px solid #334155; }
     </style>
 </head>
-<body class="pb-20">
+<body class="min-h-screen flex items-center justify-center">
 
-    <nav class="glass fixed top-0 w-full z-50 p-4">
-        <div class="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-2">
-            <h1 class="font-black italic text-lg md:text-2xl uppercase text-white header-text tracking-tighter">
-                AGENSI RAHASIA ANAK KAPLING
-            </h1>
-            <div class="flex items-center gap-3 text-[10px] font-bold text-indigo-400 tracking-[0.2em] uppercase">
-                <span>Rahmat</span> • <span>Satrio</span> • <span>Fairul</span> • <span>Paris</span>
-            </div>
+    <div id="login-screen" class="w-full max-w-[400px] p-8 mx-4 login-card bg-slate-900 rounded-[2.5rem] text-center animate-pulse-slow">
+        <div class="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-indigo-500/20">
+            <i data-lucide="lock" class="text-white w-8 h-8"></i>
         </div>
-    </nav>
-
-    <main class="pt-32 px-4 max-w-[850px] mx-auto">
+        <h2 class="font-black italic text-xl uppercase mb-2 tracking-tighter text-white">Akses Terbatas</h2>
+        <p class="text-[10px] text-gray-500 uppercase tracking-[0.3em] mb-8 font-bold">Unit Agensi Rahasia Kapling</p>
         
-        <div class="comic-frame bg-slate-900 rounded-[2rem] overflow-hidden flex items-center justify-center relative">
-            <div id="comic-viewport" class="w-full">
-                </div>
-        </div>
+        <input type="password" id="passInput" placeholder="MASUKKAN SANDI AGEN..." 
+            class="w-full bg-black/50 border-2 border-indigo-500/30 rounded-2xl px-5 py-4 text-center focus:outline-none focus:border-indigo-500 transition mb-4 font-bold tracking-widest text-sm">
+        
+        <button id="loginBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-black py-4 rounded-2xl transition shadow-xl shadow-indigo-600/30 uppercase tracking-widest text-xs">
+            Dekripsi Dokumen
+        </button>
+        <p id="errorMsg" class="text-red-500 text-[10px] mt-4 font-bold uppercase hidden">Sandi Salah! Akses Ditolak.</p>
+    </div>
 
-        <div class="mt-10 flex flex-col items-center gap-8">
-            <div class="flex items-center justify-between w-full max-w-[450px] bg-slate-900/50 p-4 rounded-3xl border border-white/5">
-                
-                <button id="prevBtn" class="btn-nav p-4 rounded-2xl font-bold flex items-center justify-center disabled:opacity-20">
-                    <i data-lucide="arrow-left-circle" class="w-6 h-6"></i>
-                </button>
-                
-                <div class="flex flex-col items-center">
-                    <span id="pageCounter" class="text-[10px] font-black text-indigo-500 mb-1 tracking-[0.3em] uppercase italic">Mission Progress</span>
-                    <select id="pageSelect" class="bg-slate-800 border-2 border-indigo-500/30 text-white font-bold rounded-xl px-4 py-2 outline-none cursor-pointer focus:border-indigo-500">
-                        </select>
+    <div id="main-content" class="hidden-content w-full">
+        <nav class="glass fixed top-0 w-full z-50 p-4">
+            <div class="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center">
+                <h1 class="font-black italic text-lg uppercase text-white header-text tracking-tighter">AGENSI RAHASIA ANAK KAPLING</h1>
+                <div class="flex items-center gap-3 text-[10px] font-bold text-indigo-400 tracking-[0.2em] uppercase">
+                    <span>Rahmat</span> • <span>Satrio</span> • <span>Fairul</span> • <span>Paris</span>
                 </div>
-
-                <button id="nextBtn" class="btn-nav p-4 rounded-2xl font-bold flex items-center justify-center bg-indigo-600 border-none text-white shadow-lg shadow-indigo-600/20 disabled:opacity-20">
-                    <i data-lucide="arrow-right-circle" class="w-6 h-6"></i>
-                </button>
             </div>
-            
-            <p class="text-[10px] text-gray-700 tracking-widest uppercase font-black">© 2026 Unit ARK - Dokumen Internal</p>
-        </div>
+        </nav>
 
-    </main>
+        <main class="pt-32 px-4 max-w-[800px] mx-auto pb-20">
+            <div class="bg-slate-900 rounded-[2rem] overflow-hidden border-2 border-slate-700 shadow-2xl">
+                <div id="comic-viewport" class="w-full min-h-[400px]"></div>
+            </div>
+
+            <div class="mt-10 flex flex-col items-center gap-6">
+                <div class="flex items-center justify-between w-full max-w-[450px] bg-slate-900/50 p-4 rounded-3xl border border-white/5">
+                    <button id="prevBtn" class="p-4 bg-slate-800 rounded-2xl hover:bg-indigo-600 transition disabled:opacity-20"><i data-lucide="chevron-left"></i></button>
+                    <select id="pageSelect" class="bg-slate-800 border-2 border-indigo-500/30 text-white font-bold rounded-xl px-4 py-2 outline-none"></select>
+                    <button id="nextBtn" class="p-4 bg-indigo-600 rounded-2xl hover:bg-indigo-500 transition disabled:opacity-20"><i data-lucide="chevron-right"></i></button>
+                </div>
+            </div>
+        </main>
+    </div>
 
     <script>
-        // Inisialisasi Ikon
         lucide.createIcons();
 
-        // KONFIGURASI (Ubah Sesuai Kebutuhan)
-        const jumlahHalamanKomik = 5; // <--- Ganti jumlah file angka (2.jpg, dst)
-        const totalHalaman = jumlahHalamanKomik + 1; // Halaman 1 adalah foto tim
-        let indexHalaman = 1;
-        const pathFolder = "img/";
+        // 1. PENGATURAN KEAMANAN
+        const SANDI_RAHASIA = "ARK2026"; // <--- GANTI SANDI KAMU DI SINI
 
-        // Elemen HTML
+        const loginScreen = document.getElementById('login-screen');
+        const mainContent = document.getElementById('main-content');
+        const passInput = document.getElementById('passInput');
+        const loginBtn = document.getElementById('loginBtn');
+        const errorMsg = document.getElementById('errorMsg');
+
+        loginBtn.onclick = () => {
+            if (passInput.value === SANDI_RAHASIA) {
+                // Berhasil Login
+                loginScreen.classList.add('hidden-content');
+                mainContent.classList.remove('hidden-content');
+                document.body.classList.remove('items-center', 'justify-center');
+                gantiHalaman(1); // Muat halaman pertama
+            } else {
+                // Gagal Login
+                errorMsg.classList.remove('hidden');
+                passInput.value = "";
+                passInput.classList.add('border-red-500');
+            }
+        };
+
+        // 2. SISTEM KOMIK
+        const jumlahHalamanKomik = 5; 
+        const totalHalaman = jumlahHalamanKomik + 1;
+        let indexHalaman = 1;
+        const folder = "img/";
         const viewport = document.getElementById('comic-viewport');
         const pageSelect = document.getElementById('pageSelect');
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
 
-        // Fungsi Ganti Halaman
         function gantiHalaman(nomor) {
-            viewport.innerHTML = ""; // Bersihkan
+            viewport.innerHTML = "";
             const img = document.createElement('img');
-            
-            // Logika File: 1 = team.jpg, sisanya = angka.jpg
-            if (nomor === 1) {
-                img.src = pathFolder + "team.jpg";
-            } else {
-                img.src = `${pathFolder}${nomor}.jpg`;
-            }
-
-            img.className = "w-full block animate-page";
-            img.onerror = () => {
-                viewport.innerHTML = `<div class="p-20 text-center text-gray-600 italic uppercase font-bold tracking-widest text-xs">Dokumen Halaman ${nomor} Belum Didekripsi (File Tidak Ditemukan)</div>`;
-            };
-
+            img.src = (nomor === 1) ? folder + "team.jpg" : `${folder}${nomor}.jpg`;
+            img.className = "w-full block opacity-0 transition-opacity duration-500";
+            img.onload = () => img.classList.remove('opacity-0');
             viewport.appendChild(img);
             
-            // Sinkronisasi UI
             pageSelect.value = nomor;
             prevBtn.disabled = nomor === 1;
             nextBtn.disabled = nomor === totalHalaman;
-            
-            // Scroll ke atas dengan halus
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Buat Daftar Dropdown
         for (let i = 1; i <= totalHalaman; i++) {
             const opt = document.createElement('option');
             opt.value = i;
-            opt.innerText = i === 1 ? "HALAMAN: COVER" : `HALAMAN: ${i}`;
+            opt.innerText = i === 1 ? "COVER" : `HALAMAN ${i}`;
             pageSelect.appendChild(opt);
         }
 
-        // Tombol Klik
         prevBtn.onclick = () => { if(indexHalaman > 1) { indexHalaman--; gantiHalaman(indexHalaman); } };
         nextBtn.onclick = () => { if(indexHalaman < totalHalaman) { indexHalaman++; gantiHalaman(indexHalaman); } };
         pageSelect.onchange = (e) => { indexHalaman = parseInt(e.target.value); gantiHalaman(indexHalaman); };
-
-        // Jalankan Halaman Pertama
-        gantiHalaman(1);
     </script>
 </body>
 </html>
