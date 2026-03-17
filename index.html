@@ -3,85 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agensi Rahasia Kapling | Official</title>
+    <title>Agensi Rahasia Anak Kapling | Web Komik</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #020617; color: #e2e8f0; font-family: sans-serif; }
-        .glass { background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .heart-active { fill: #ef4444; color: #ef4444 !important; transform: scale(1.2); }
+        /* Background Kartun: Pola Titik & Gradasi */
+        body { 
+            background-color: #020617;
+            background-image: radial-gradient(#1e293b 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: #e2e8f0; 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+        }
+        .glass { 
+            background: rgba(15, 23, 42, 0.9); 
+            backdrop-filter: blur(10px); 
+            border-bottom: 2px solid #4f46e5; 
+        }
+        .comic-shadow { 
+            box-shadow: 0 0 50px rgba(79, 70, 229, 0.3); 
+            border: 4px solid #1e293b;
+        }
+        .header-text {
+            text-shadow: 3px 3px 0px #4f46e5;
+        }
     </style>
 </head>
 <body>
 
-    <nav class="glass fixed top-0 w-full z-50 p-4 text-center">
-        <h1 class="font-black italic tracking-tighter text-xl uppercase">Agensi Rahasia <span class="text-indigo-500">Kapling</span></h1>
+    <nav class="glass fixed top-0 w-full z-50 p-4">
+        <div class="max-w-5xl mx-auto flex justify-center items-center">
+            <h1 class="font-black italic tracking-tighter text-xl md:text-2xl uppercase text-white header-text">
+                AGENSI RAHASIA ANAK KAPLING
+            </h1>
+        </div>
     </nav>
 
-    <main class="pt-24 pb-20 px-4 max-w-[800px] mx-auto">
+    <main class="pt-28 pb-20 px-4 max-w-[850px] mx-auto">
         
-        <div id="reader" class="bg-slate-900 rounded-2xl overflow-hidden shadow-2xl border border-white/10 mb-10">
-            </div>
-
-        <div class="text-center mb-16">
-            <button id="btn-like" class="group transition-all active:scale-90">
-                <div class="p-5 bg-white/5 rounded-full mb-2 inline-block">
-                    <i data-lucide="heart" id="icon-heart" class="w-10 h-10 text-gray-500 transition-all"></i>
-                </div>
-                <p id="text-like" class="font-bold text-gray-400 uppercase text-xs tracking-widest">Memuat Like...</p>
-            </button>
-            <p class="text-[10px] text-gray-600 mt-2 italic">*Like disimpan di browser kamu</p>
+        <div class="text-center mb-10">
+            <p class="text-xs font-bold text-indigo-400 tracking-[0.3em] uppercase mb-2">Tim Kreatif:</p>
+            <p class="text-sm font-semibold text-gray-400">Rahmat Irawan • Satrio • Fairul • Paris</p>
         </div>
 
-        <section class="bg-slate-900/50 p-6 rounded-3xl border border-white/5">
-            <h3 class="text-lg font-bold mb-6 flex items-center gap-2"><i data-lucide="message-circle"></i> DISKUSI AGEN</h3>
+        <div id="reader" class="comic-shadow bg-slate-900 rounded-3xl overflow-hidden mb-16">
+            </div>
+
+        <section class="bg-slate-900/80 p-6 md:p-10 rounded-[2rem] border-2 border-indigo-500/30">
+            <h3 class="text-xl font-bold mb-8 flex items-center gap-3 text-indigo-400 uppercase italic">
+                <i data-lucide="message-circle"></i> Ruang Diskusi Agen
+            </h3>
             
-            <div class="giscus"></div>
+            <div class="giscus">
+                <p class="text-xs text-gray-500 text-center italic">Memuat diskusi publik... (Pastikan sudah terhubung ke GitHub)</p>
+            </div>
         </section>
 
     </main>
 
+    <footer class="py-12 text-center">
+        <p class="text-gray-600 text-[10px] tracking-[0.5em] uppercase font-black">
+            © 2026 Unit ARK - Dokumen Rahasia
+        </p>
+    </footer>
+
     <script>
         lucide.createIcons();
 
-        // 1. LOAD GAMBAR
-        const totalHalaman = 5; 
+        // PENGATURAN GAMBAR
+        const totalHalaman = 5; // <--- Ganti jumlah halaman komikmu di sini
         const reader = document.getElementById('reader');
         const folder = "img/";
 
+        // 1. Memasukkan Foto Tim (Selfie)
         const team = document.createElement('img');
-        team.src = folder + "team.jpg";
-        team.className = "w-full border-b-4 border-indigo-600";
+        team.src = folder + "team.jpg"; 
+        team.className = "w-full border-b-8 border-indigo-600";
+        team.onerror = () => team.style.display = 'none';
         reader.appendChild(team);
 
+        // 2. Memasukkan Gambar Komik (2.jpg, 3.jpg, dst)
         for (let i = 2; i <= totalHalaman + 1; i++) {
             const img = document.createElement('img');
             img.src = `${folder}${i}.jpg`;
-            img.className = "w-full border-b border-white/5";
+            img.className = "w-full border-b-2 border-slate-800 opacity-0 transition-opacity duration-700";
+            img.loading = "lazy";
+            img.onload = () => img.classList.remove('opacity-0');
             reader.appendChild(img);
         }
-
-        // 2. LOGIKA LIKE (Sederhana)
-        let likes = parseInt(localStorage.getItem('ark_likes_count')) || 143;
-        let isLiked = localStorage.getItem('ark_is_liked') === 'true';
-        const textLike = document.getElementById('text-like');
-        const iconHeart = document.getElementById('icon-heart');
-
-        function updateLikeUI() {
-            textLike.innerText = `${isLiked ? likes + 1 : likes} Laporan Disukai`;
-            isLiked ? iconHeart.classList.add('heart-active') : iconHeart.classList.remove('heart-active');
-        }
-
-        document.getElementById('btn-like').onclick = () => {
-            isLiked = !isLiked;
-            localStorage.setItem('ark_is_liked', isLiked);
-            updateLikeUI();
-        };
-        updateLikeUI();
-
-        // 3. LOGIKA KOMENTAR GISCUS (Bisa Dilihat Semua Orang)
-        // Kamu harus mengaktifkan 'Discussions' di repo GitHub kamu
-        // Lalu gunakan giscus.app untuk mendapatkan kode ini
     </script>
 
     <script src="https://giscus.app/client.js"
