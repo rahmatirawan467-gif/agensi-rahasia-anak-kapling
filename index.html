@@ -3,8 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ARK | Secret Agency Protocol</title>
     
+    <title>ARK AGENSI | Portal Resmi Tim ARK (Rahmat, Satrio, Fairul, Paris)</title>
+    <meta name="description" content="Portal pusat data dan galeri rahasia ARK Agensi. Akses eksklusif untuk anggota tim: Rahmat, Satrio, Fairul, dan Paris.">
+    <meta name="keywords" content="ARK Agensi, ARK Agency, Tim ARK, Rahmat ARK, Satrio ARK, Fairul ARK, Paris ARK, Anggota ARK">
+    <link rel="canonical" href="https://link-github-pages-kamu.github.io/">
+    
+    <meta property="og:title" content="ARK AGENSI - Official Portal">
+    <meta property="og:description" content="Dokumen dan Galeri Rahasia Tim ARK.">
+    <meta property="og:image" content="img/team.jpg">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -13,107 +21,123 @@
     <style>
         body { background-color: #020617; margin: 0; color: #e2e8f0; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
 
-        /* 1. FOTO BACKGROUND */
+        /* Background & Layers */
         #ark-bg-image {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -3;
             background-size: cover; background-position: center;
             background-image: url('img/team.jpg'); 
-            filter: blur(2px) brightness(70%);
+            filter: blur(2px) brightness(60%);
         }
-
-        /* 2. KANVAS EFEK PIXEL (Z-INDEX HARUS DI ATAS BG) */
-        #pixel-canvas {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -2; pointer-events: none;
-        }
-
-        .ark-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-            background: linear-gradient(rgba(2,6,23,0.3), rgba(15,23,42,0.5));
-        }
-
-        .card-system { background: rgba(15, 23, 42, 0.96); border: 2px solid #4f46e5; box-shadow: 0 0 40px rgba(79, 70, 229, 0.4); backdrop-filter: blur(10px); }
-        .hidden-content { display: none !important; }
+        #pixel-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: none; }
+        .ark-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: linear-gradient(rgba(2,6,23,0.3), rgba(15,23,42,0.6)); }
         
-        /* Tombol Pilihan */
+        /* UI Components */
+        .card-system { background: rgba(15, 23, 42, 0.97); border: 2px solid #4f46e5; box-shadow: 0 0 40px rgba(79, 70, 229, 0.4); backdrop-filter: blur(12px); }
+        .hidden-content { display: none !important; }
         .btn-choice { transition: all 0.3s; border: 1px solid rgba(255,255,255,0.1); }
         .active-iya { background: #4f46e5 !important; color: white !important; box-shadow: 0 0 15px #4f46e5; }
         .active-tidak { background: #ef4444 !important; color: white !important; }
+
+        /* Mode Zoom */
+        #comic-viewport img { cursor: zoom-in; transition: transform 0.3s ease; }
+        #comic-viewport img:hover { transform: scale(1.02); }
+        #zoom-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); z-index: 1000;
+            display: none; align-items: center; justify-content: center;
+            cursor: zoom-out; backdrop-filter: blur(15px);
+        }
+        #zoom-overlay img { max-width: 95%; max-height: 90vh; border-radius: 12px; border: 2px solid #4f46e5; animation: zoomAnim 0.3s ease; }
+        @keyframes zoomAnim { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen">
+
+    <div style="display:none;" aria-hidden="true">
+        <h1>ARK AGENSI - TIM RAHMAT SATRIO FAIRUL PARIS</h1>
+        <p>Website resmi ARK Agensi untuk pendataan anggota dan galeri tim.</p>
+        <img src="img/team.jpg" alt="Foto Utama ARK Agensi">
+    </div>
 
     <div id="ark-bg-image"></div>
     <canvas id="pixel-canvas"></canvas>
     <div class="ark-overlay"></div>
 
+    <div id="zoom-overlay" onclick="closeZoom()">
+        <img id="zoomed-img" src="" alt="ARK Full View">
+        <p class="absolute bottom-6 text-white/40 text-[9px] font-black uppercase tracking-[0.5em]">Ketuk untuk kembali</p>
+    </div>
+
     <div id="login-screen" class="w-full max-w-[380px] p-10 mx-4 card-system rounded-[2.5rem] text-center z-10">
-        <div class="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
-            <i data-lucide="lock" class="text-white w-8 h-8"></i>
+        <div class="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-indigo-500/30">
+            <i data-lucide="shield-check" class="text-white w-8 h-8"></i>
         </div>
-        <h2 class="font-black italic text-xl uppercase mb-6 text-white tracking-widest">Dekripsi ARK</h2>
+        <h2 class="font-black italic text-xl uppercase mb-6 text-white tracking-widest">Akses ARK</h2>
         <input type="password" id="passInput" placeholder="KODE AKSES..." class="w-full bg-black/60 border border-indigo-500/30 rounded-xl py-4 text-center mb-4 text-white font-bold outline-none focus:border-indigo-500">
-        <button id="loginBtn" class="w-full bg-indigo-600 py-4 rounded-xl font-black uppercase text-xs">Masuk</button>
+        <button id="loginBtn" class="w-full bg-indigo-600 py-4 rounded-xl font-black uppercase text-xs active:scale-95 transition-all">Verifikasi</button>
     </div>
 
     <div id="agreement-screen" class="hidden-content w-full max-w-[450px] p-8 mx-4 card-system rounded-[2.5rem] z-10">
-        <h2 class="font-black italic text-lg uppercase text-white mb-6 border-b border-white/10 pb-2">Verifikasi Agen</h2>
-        
-        <div class="space-y-4">
-            <label class="flex items-center gap-3 bg-black/20 p-4 rounded-xl cursor-pointer">
+        <h2 class="font-black italic text-lg uppercase text-white mb-6 border-b border-indigo-500/30 pb-3">Protokol Verifikasi</h2>
+        <div class="space-y-4 text-left">
+            <label class="flex items-center gap-3 bg-black/30 p-4 rounded-xl cursor-pointer">
                 <input type="checkbox" id="checkIzin" class="w-5 h-5 accent-indigo-500">
-                <span class="text-xs font-bold text-gray-300 uppercase">1. Sudah dapat izin akses?</span>
+                <span class="text-[10px] font-black text-gray-300 uppercase">1. Sudah dapat izin ketua?</span>
             </label>
-
-            <div class="bg-black/20 p-4 rounded-xl">
-                <p class="text-[10px] font-black text-indigo-400 mb-3 uppercase">2. Apakah Anda Anggota ARK?</p>
+            <div class="bg-black/30 p-4 rounded-xl">
+                <p class="text-[9px] font-black text-indigo-400 mb-3 uppercase tracking-widest text-center">2. Konfirmasi Anggota Resmi</p>
                 <div class="flex gap-2">
-                    <button id="btnIya" class="btn-choice flex-1 py-3 bg-slate-800 rounded-lg text-[10px] font-black">IYA</button>
-                    <button id="btnTidak" class="btn-choice flex-1 py-3 bg-slate-800 rounded-lg text-[10px] font-black">TIDAK</button>
+                    <button id="btnIya" class="btn-choice flex-1 py-3 bg-slate-800 rounded-lg text-[10px] font-black text-white">IYA</button>
+                    <button id="btnTidak" class="btn-choice flex-1 py-3 bg-slate-800 rounded-lg text-[10px] font-black text-white">TIDAK</button>
                 </div>
             </div>
-
-            <div class="bg-black/20 p-4 rounded-xl">
-                <p class="text-[10px] font-black text-indigo-400 mb-2 uppercase">3. Kenapa ingin masuk?</p>
-                <textarea id="alasanInput" class="w-full bg-black/40 border border-white/5 rounded-lg p-3 text-xs text-white h-20 outline-none focus:border-indigo-500"></textarea>
+            <div class="bg-black/30 p-4 rounded-xl">
+                <p class="text-[9px] font-black text-indigo-400 mb-2 uppercase tracking-widest text-center">3. Alasan Mengakses</p>
+                <textarea id="alasanInput" placeholder="Tulis alasan..." class="w-full bg-black/40 border border-white/5 rounded-lg p-3 text-xs text-white h-20 outline-none focus:border-indigo-500"></textarea>
             </div>
         </div>
-
-        <button id="openDocBtn" disabled class="w-full mt-6 bg-slate-700 py-4 rounded-xl text-xs font-black text-gray-400 uppercase cursor-not-allowed">Buka Dokumen</button>
+        <button id="openDocBtn" disabled class="w-full mt-6 bg-slate-700 py-5 rounded-xl text-[11px] font-black text-gray-400 uppercase tracking-widest cursor-not-allowed transition-all">Buka Dokumen Rahasia</button>
     </div>
 
     <div id="main-content" class="hidden-content w-full min-h-screen z-10">
-        <nav class="fixed top-0 w-full p-4 bg-slate-900/90 border-b border-indigo-500/50 backdrop-blur-md">
-            <h1 class="text-center font-black italic text-white uppercase tracking-tighter">ARK AGENSI DATA</h1>
+        <nav class="fixed top-0 w-full p-5 bg-slate-900/90 border-b border-indigo-500/40 backdrop-blur-xl z-[50]">
+            <div class="max-w-5xl mx-auto flex justify-between items-center">
+                <h1 class="font-black italic text-white uppercase tracking-tighter">ARK AGENSI</h1>
+                <div class="text-[8px] font-bold text-indigo-400 uppercase tracking-[0.3em]">UNIT R • S • F • P</div>
+            </div>
         </nav>
-        <div class="pt-24 px-4 text-center max-w-[700px] mx-auto">
-            <div id="comic-viewport" class="bg-black border-2 border-indigo-500/20 rounded-3xl overflow-hidden min-h-[300px]"></div>
-            <div class="mt-6 flex justify-center items-center gap-4 bg-slate-900 p-4 rounded-2xl border border-white/10">
-                <button id="prevBtn" class="p-3 bg-slate-800 rounded-xl"><i data-lucide="chevron-left"></i></button>
-                <select id="pageSelect" class="bg-transparent text-white font-bold text-xs"></select>
-                <button id="nextBtn" class="p-3 bg-indigo-600 rounded-xl"><i data-lucide="chevron-right"></i></button>
+        <div class="pt-28 px-4 text-center max-w-[750px] mx-auto pb-16">
+            <p class="text-[8px] text-indigo-400 font-black mb-3 uppercase tracking-[0.4em] animate-pulse">Klik foto untuk memperbesar</p>
+            <div id="comic-viewport" class="bg-black border-2 border-indigo-500/30 rounded-[2.5rem] overflow-hidden shadow-2xl" onclick="openZoom()"></div>
+            
+            <div class="mt-8 flex justify-center items-center gap-5 bg-slate-900/80 p-4 rounded-3xl border border-white/10 shadow-2xl">
+                <button id="prevBtn" class="p-4 bg-slate-800 rounded-2xl active:scale-90"><i data-lucide="chevron-left"></i></button>
+                <select id="pageSelect" class="bg-transparent text-white font-black text-xs outline-none cursor-pointer"></select>
+                <button id="nextBtn" class="p-4 bg-indigo-600 rounded-2xl active:scale-90 shadow-lg shadow-indigo-600/30"><i data-lucide="chevron-right"></i></button>
             </div>
         </div>
     </div>
 
     <script>
         lucide.createIcons();
-        const SANDI = "ARK2026";
-        let statAnggota = false;
+        const KODE_AKSES = "ARK2026";
+        let isAnggota = false;
+        let currentPage = 1; 
+        const totalPages = 6;
 
-        // --- SISTEM PERPINDAHAN LAYAR ---
+        // Login & Verifikasi
         document.getElementById('loginBtn').onclick = () => {
-            if(document.getElementById('passInput').value === SANDI) {
+            if(document.getElementById('passInput').value === KODE_AKSES) {
                 document.getElementById('login-screen').classList.add('hidden-content');
                 document.getElementById('agreement-screen').classList.remove('hidden-content');
-            } else { alert("Sandi Salah!"); }
+            } else { alert("Akses Ditolak!"); }
         };
 
         function validate() {
             const izin = document.getElementById('checkIzin').checked;
-            const alasan = document.getElementById('alasanInput').value.trim().length > 2;
+            const alasan = document.getElementById('alasanInput').value.trim().length > 3;
             const btn = document.getElementById('openDocBtn');
-            if(izin && statAnggota && alasan) {
+            if(izin && isAnggota && alasan) {
                 btn.disabled = false; btn.style.background = "#4f46e5"; btn.style.color = "white"; btn.style.cursor = "pointer";
             } else {
                 btn.disabled = true; btn.style.background = "#334155"; btn.style.color = "#94a3b8";
@@ -122,8 +146,8 @@
 
         document.getElementById('checkIzin').onchange = validate;
         document.getElementById('alasanInput').oninput = validate;
-        document.getElementById('btnIya').onclick = function() { statAnggota = true; this.classList.add('active-iya'); document.getElementById('btnTidak').classList.remove('active-tidak'); validate(); };
-        document.getElementById('btnTidak').onclick = function() { statAnggota = false; this.classList.add('active-tidak'); document.getElementById('btnIya').classList.remove('active-iya'); validate(); };
+        document.getElementById('btnIya').onclick = function() { isAnggota = true; this.classList.add('active-iya'); document.getElementById('btnTidak').classList.remove('active-tidak'); validate(); };
+        document.getElementById('btnTidak').onclick = function() { isAnggota = false; this.classList.add('active-tidak'); document.getElementById('btnIya').classList.remove('active-iya'); validate(); };
 
         document.getElementById('openDocBtn').onclick = () => {
             document.getElementById('agreement-screen').classList.add('hidden-content');
@@ -132,58 +156,56 @@
             renderPage(1);
         };
 
-        // --- SISTEM KOMIK ---
-        let currentPage = 1; const totalPages = 6;
+        // Render Komik
         function renderPage(n) {
             const vp = document.getElementById('comic-viewport');
             const src = (n === 1) ? "img/team.jpg" : `img/${n}.jpg`;
-            vp.innerHTML = `<img src="${src}" class="w-full">`;
+            vp.innerHTML = `<img id="current-img" src="${src}" class="w-full" alt="Arsip Foto ARK Halaman ${n}">`;
             document.getElementById('pageSelect').value = n;
+            currentPage = n;
         }
 
         for(let i=1; i<=totalPages; i++) {
-            const opt = document.createElement('option'); opt.value = i; opt.innerText = i === 1 ? "COVER" : "HAL " + i;
+            const opt = document.createElement('option'); opt.value = i; opt.innerText = i === 1 ? "SAMPUL" : "DOKUMEN " + i;
             document.getElementById('pageSelect').appendChild(opt);
         }
-        document.getElementById('nextBtn').onclick = () => { if(currentPage < totalPages) { currentPage++; renderPage(currentPage); } };
-        document.getElementById('prevBtn').onclick = () => { if(currentPage > 1) { currentPage--; renderPage(currentPage); } };
+        document.getElementById('nextBtn').onclick = () => { if(currentPage < totalPages) renderPage(currentPage + 1); };
+        document.getElementById('prevBtn').onclick = () => { if(currentPage > 1) renderPage(currentPage - 1); };
+        document.getElementById('pageSelect').onchange = (e) => renderPage(parseInt(e.target.value));
 
-        // --- EFEK PIXEL (CORE EFFECT) ---
+        // Fitur Zoom
+        function openZoom() {
+            document.getElementById('zoomed-img').src = document.getElementById('current-img').src;
+            document.getElementById('zoom-overlay').style.display = 'flex';
+        }
+        function closeZoom() { document.getElementById('zoom-overlay').style.display = 'none'; }
+
+        // Efek Pixel (Three.js)
         const canvas = document.getElementById('pixel-canvas');
         const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         const scene = new THREE.Scene();
         const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-        
         const material = new THREE.ShaderMaterial({
             uniforms: { uTime: { value: 0 }, uRes: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) } },
             vertexShader: `void main(){ gl_Position = vec4(position, 1.0); }`,
             fragmentShader: `
                 precision highp float;
                 uniform float uTime; uniform vec2 uRes;
-                float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+                float h(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
                 void main(){
-                    vec2 grid = floor(gl_FragCoord.xy / 5.0); // Ukuran pixel kotak
-                    float n = hash(grid + floor(uTime * 4.0));
-                    if(n < 0.94) discard; // Munculkan hanya 6% dari total pixel
-                    gl_FragColor = vec4(0.4, 0.3, 1.0, 0.4); // Warna biru transparan
+                    vec2 grid = floor(gl_FragCoord.xy / 4.0);
+                    float n = h(grid + floor(uTime * 3.5));
+                    if(n < 0.94) discard; 
+                    gl_FragColor = vec4(0.31, 0.27, 0.90, 0.3);
                 }
             `,
             transparent: true
         });
-
         scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material));
-        function animate() {
-            requestAnimationFrame(animate);
-            material.uniforms.uTime.value += 0.05;
-            renderer.render(scene, camera);
-        }
+        function animate() { requestAnimationFrame(animate); material.uniforms.uTime.value += 0.05; renderer.render(scene, camera); }
         animate();
-
-        window.addEventListener('resize', () => {
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            material.uniforms.uRes.value.set(window.innerWidth, window.innerHeight);
-        });
+        window.addEventListener('resize', () => { renderer.setSize(window.innerWidth, window.innerHeight); material.uniforms.uRes.value.set(window.innerWidth, window.innerHeight); });
     </script>
 </body>
 </html>
